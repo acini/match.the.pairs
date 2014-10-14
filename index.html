@@ -74,6 +74,7 @@ function processclick(elmt) {
 					if (cards[i].innerHTML == currentSelection[0] || cards[i].innerHTML ==
 						currentSelection[1]) {
 						card[i].parentNode.removeChild(card[i]);
+						break;
 					}
 				}
 				currentSelection = [];
