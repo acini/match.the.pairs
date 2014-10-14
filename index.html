@@ -4,11 +4,13 @@
 <style>
 #card {
 	background-color: #FBFFE5;
-	border: 1px solid;
+	border: 2px solid;
 	border-radius: 10px;
 	width: 100%;
-	padding: 5px;
-	font-size:19px;
+	height: 100%;
+	padding: 5px 5px;
+	margin: 2px 2px;
+	font-size:19px bold;
 	text-align: center;
 	font-family: Sans serif;
 }
@@ -20,12 +22,17 @@
 #clean_button {
 	width: 100%;
 	background-color: #ffffff;
-	border: 5px solid;
+	border: 5px solid gray;
 	margin: 5px;
 	padding: 5px;
 	border-radius: 10px;
 	height: 50px;
-	font-size: 19px;
+	font-size: 20px;
+	color: gray;
+}
+
+td {
+padding: 5px 5px;
 }
 
 </style>
@@ -38,11 +45,13 @@
 		</div>
 
 <div>
-    <div style="float: left; width: 49%; height:100%;" id="cards" name="LeftPanel"></div>
-    <div style="float: right; width: 49%; height:100%;" id="cards" name="RightPanel"></div>
-</div>
-<input type="button" id="hidden" value="Clean" onMouseDown="window.location.href=window.location.href">
-	</div>
+<table width=100%><tr><td width="50%" padding=2>
+    <div id="cards" name="LeftPanel"></div></td><td>
+    <div id="cards" name="RightPanel"></div></td>
+</div></div>
+</tr><tr><td colspan=2>
+<input type="button" id="hidden" value="Clean" onMouseDown="window.location.href=window.location.href"></td></tr>
+</table>
 <script>
 // Shuffles the array
 function shuffle(array) {
@@ -186,6 +195,7 @@ window.onload = function() {
 				rp.appendChild(card);
 			}
 			document.getElementById("hidden").setAttribute('id','clean_button');
+			document.getElementById("fileInput").setAttribute('id','hidden');
 		}
 		reader.readAsText(file); // ??
 	});
