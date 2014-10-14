@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <head>
 <title>Match-the-pairs</title>
 <style>
 #card {
-	box-shadow: 2px 2px 2px grey;
 	background-color: #FBFFE5;
-	border: 0px solid;
+	border: 1px solid;
 	margin: 2px;
 	padding: 10px;
 	width: 99%;
@@ -19,7 +19,7 @@
 <div id="page-wrapper">
 
 		<div>
-			<input type="button" style="position: relative; width: 50px; height: 50px; font-size=100%;" value="&#10227;" onClick="window.location.href=window.location.href">
+			<input type="button" style="position: relative; width: 50px; height: 50px; font-size=100%;" value="R" onMouseDown="window.location.href=window.location.href">
 			<input style="height=100%; width=100px;" type="file" id="fileInput">
 		</div>
 
@@ -46,8 +46,11 @@ function shuffle(array) {
 	return array;
 }
 var currentSelection = new Array;
+var drop = new Audio('drop.wav');
+var select = new Audio('select.wav');
 
 function processclick(elmt) {
+	select.play();
 	var text = elmt.innerHTML;
 	elmt.style.backgroundColor = "#EBFF95";
 	if (currentSelection.indexOf(text) == -1) {
@@ -66,8 +69,8 @@ function processclick(elmt) {
 		if (sample1 == sample2) {
 			decolorall();
 		}
-		for (var i in cardList) {
-			if (cardList[i] == sample1 || cardList[i] == sample2) {
+		for (var i in cardListSelected) {
+			if (cardListSelected[i] == sample1 || cardListSelected[i] == sample2) {
 				var cards = document.getElementsByName("card");
 				for (var i in cards) {
 					if (cards[i].innerHTML == currentSelection[0] || cards[i].innerHTML ==
@@ -76,6 +79,7 @@ function processclick(elmt) {
 					}
 				}
 				currentSelection = [];
+				drop.play();
 				break;
 			}
 		}
@@ -114,10 +118,13 @@ window.onload = function() {
 		reader.onload = function(e) {
 			var fileText = reader.result;
 			cardList = fileText.split("\n");
+			shuffle(cardList);
+			cardListSelected = cardList.splice(0,10);
+			alert(cardListSelected);
 			var fronts = new Array
 			var backs = new Array
-			for (var i in cardList) {
-				tempArray = cardList[i].split("\t");
+			for (var i in cardListSelected) {
+				tempArray = cardListSelected[i].split("\t");
 				fronts.push(tempArray[0]);
 				backs.push(tempArray[1]);
 			}
@@ -129,7 +136,7 @@ window.onload = function() {
 				var card = document.createElement('div');
 				card.setAttribute('id', 'card');
 				card.setAttribute('name', 'card');
-				card.setAttribute('onclick', 'processclick(this)');
+				card.setAttribute('onMouseDown', 'processclick(this)');
 				card.innerHTML = fronts[i];
 				lp.appendChild(card);
 			}
@@ -137,7 +144,7 @@ window.onload = function() {
 				var card = document.createElement('div');
 				card.setAttribute('id', 'card');
 				card.setAttribute('name', 'card');
-				card.setAttribute('onclick', 'processclick(this)');
+				card.setAttribute('onMouseDown', 'processclick(this)');
 				card.innerHTML = backs[i];
 				rp.appendChild(card);
 			}
