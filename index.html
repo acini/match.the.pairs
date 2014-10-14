@@ -6,7 +6,7 @@
 	background-color: #FBFFE5;
 	border: 1px solid;
 	width: 100%;
-	padding: 1px;
+	padding: 5px;
 	text-align: center;
 	font-family: Sans serif;
 }
@@ -48,7 +48,7 @@ var drop = new Audio('drop.wav');
 var select = new Audio('select.wav');
 
 function processclick(elmt) {
-	select.play();
+	//select.play();
 	var text = elmt.innerHTML;
 	elmt.style.backgroundColor = "#EBFF95";
 	if (currentSelection.indexOf(text) == -1) {
