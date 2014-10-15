@@ -124,7 +124,7 @@
             }
             for (var i in cards) {
               if (cards[i].innerHTML == currentSelection[1]) {
-                card[i].parentNode.removeChild(card[i]); // the second one too!
+                cards[i].parentNode.removeChild(card[i]); // the second one too!
                 break; // because I don't want to delete multiple elements with same values
               }
             }
