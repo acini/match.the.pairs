@@ -132,28 +132,17 @@ function processclick(elmt) {
 		decolorall();
 	}
 
-// If last two cards are remaining, delete them #NotWorking!?
-numcards = document.getElementsByName("card").length;
-if (numcards == 2){
-cleanup();
-}
-}
-
 // Dirty decolorizer
 function decolorall() {
 	var cards = document.getElementsByName("card");
+	if (cards.length == 0) {
+	window.location.href=window.location.href;
+	}
 	for (var i in cards) {
 		cards[i].style.backgroundColor = "#FBFFE5";
 	}
 }
 
-// Redundant cleanup, TODO
-function cleanup() {
-	var cards = document.getElementsByName("card");
-	for (var i in cards) {
-		delete cards[i];
-	}
-}
 
 /// Main activity
 window.onload = function() {
