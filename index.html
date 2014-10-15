@@ -1,214 +1,204 @@
 <!DOCTYPE html>
-<html>
-
 <head>
-  <title>Match-the-pairs</title>
-  <style>
-    #card {
-      background-color: #FBFFE5;
-      border: 2px solid;
-      border-radius: 10px;
-      width: 100%;
-      height: 100%;
-      padding: 5px 5px;
-      margin: 2px 2px;
-      font-size: 19px bold;
-      text-align: center;
-      font-family: Sans serif;
-    }
-    #hidden {
-      display: none;
-    }
-    #clean_button {
-      width: 100%;
-      background-color: #ffffff;
-      border: 5px solid gray;
-      margin: 5px;
-      padding: 5px;
-      border-radius: 10px;
-      height: 50px;
-      font-size: 20px;
-      color: gray;
-    }
-    td {
-      padding: 5px 5px;
-    }
-  </style>
+<title>Match-the-pairs</title>
+<style>
+#card {
+	background-color: #FBFFE5;
+	border: 2px solid;
+	border-radius: 10px;
+	width: 100%;
+	height: 100%;
+	padding: 5px 5px;
+	margin: 2px 2px;
+	font-size:19px bold;
+	text-align: center;
+	font-family: Sans serif;
+}
+
+#hidden {
+	display: none;
+}
+
+#clean_button {
+	width: 100%;
+	background-color: #ffffff;
+	border: 5px solid gray;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 10px;
+	height: 50px;
+	font-size: 20px;
+	color: gray;
+}
+
+td {
+padding: 5px 5px;
+}
+
+</style>
 </head>
-
 <body>
-  <div id="page-wrapper">
+<div id="page-wrapper">
 
-    <div>
-      <input type="file" id="fileInput" style="button">
-    </div>
+		<div>
+			<input type="file" id="fileInput" style="button">
+		</div>
 
-    <div>
-      <table width=100%>
-        <tr>
-          <td width="50%" padding=2>
-            <div id="cards" name="LeftPanel"></div>
-          </td>
-          <td>
-            <div id="cards" name="RightPanel"></div>
-          </td>
-    </div>
-  </div>
-  </tr>
-  <tr>
-    <td colspan=2>
-      <input type="button" id="hidden" value="Clean" onMouseDown="cleanup()">
-    </td>
-  </tr>
-  </table>
-  <script>
-    // Shuffles the array
-    function shuffle(array) {
-      var currentIndex = array.length,
-        temporaryValue, randomIndex;
-      // While there remain elements to shuffle...
-      while (0 !== currentIndex) {
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-      }
-      return array;
-    }
+<div>
+<table width=100%><tr><td width="50%" padding=2>
+    <div id="cards" name="LeftPanel"></div></td><td>
+    <div id="cards" name="RightPanel"></div></td>
+</div></div>
+</tr><tr><td colspan=2>
+<input type="button" id="hidden" value="Clean" onMouseDown="window.location.href=window.location.href"></td></tr>
+</table>
+<script>
+// Shuffles the array
+function shuffle(array) {
+	var currentIndex = array.length,
+		temporaryValue, randomIndex;
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+	return array;
+}
 
-     // Declare global variables
-    var currentSelection = new Array;
-    var drop = new Audio('drop.wav');
-    var select = new Audio('select.wav');
-    var clean = new Audio('clean.wav');
+// Declare global variables
+var currentSelection = new Array;
+var drop = new Audio('drop.wav');
+var select = new Audio('select.wav');
 
-     // Process click event
-    function processclick(elmt) {
-      ///select.play();
-      // Get text value of clicke element
-      var text = elmt.innerHTML;
-      // Change color of clicked element to show as selected
-      elmt.style.backgroundColor = "#EBFF95";
-      if (currentSelection.indexOf(text) == -1) { // If selection is not in comparison array, push to array
-        elmt.style.backgroundColor = "#EBFF95";
-        currentSelection.push(text);
-      } else {
-        elmt.style.backgroundColor = "#FBFFE5";
-        currentSelection.splice(currentSelection.indexOf(text), 1); // else delete it from array when it is reselected
-      }
+// Process click event
+function processclick(elmt) {
+	///select.play();
+	// Get text value of clicke element
+	var text = elmt.innerHTML;
+	// Change color of clicked element to show as selected
+	elmt.style.backgroundColor = "#EBFF95";
+	if (currentSelection.indexOf(text) == -1) { // If selection is not in comparison array, push to array
+		elmt.style.backgroundColor = "#EBFF95";
+		currentSelection.push(text);
+	} else {
+		elmt.style.backgroundColor = "#FBFFE5";
+		currentSelection.splice(currentSelection.indexOf(text), 1); // else delete it from array when it is reselected
+	}
+	
+	// If I deselect first selected element, decolorize all elements #dirty
+	if (currentSelection.length == 0) {
+		decolorall();
+	}
+	// When I have two values in comparison array, process it
+	if (currentSelection.length == 2) {
+		// Create two samples for comparison
+		var sample1 = currentSelection[0] + "	" + currentSelection[1];
+		var sample2 = currentSelection[1] + "	" + currentSelection[0];
+		// Some cards may have same text, if such cards are selected, decolor everything
+		if (sample1 == sample2) {
+			decolorall();
+		}
+		for (var i in cardListSelected) {
+			if (cardListSelected[i] == sample1 || cardListSelected[i] == sample2) { // if a match is found, that is correct matched pair,
+				var cards = document.getElementsByName("card");
+				for (var i in cards) {
+					if (cards[i].innerHTML == currentSelection[0]) {
+						cards[i].parentNode.removeChild(card[i]); // pop those cards out of stack
+						break; // because I don't want to delete multiple elements with same values
+					}
+				}
+				for (var i in cards) {
+					if (cards[i].innerHTML == currentSelection[1]) {
+						cards[i].parentNode.removeChild(card[i]); // the second one too!
+						break; // because I don't want to delete multiple elements with same values
+					}
+				}
+				currentSelection = [];
+				drop.play(); // Play the quick funny sound
+				decolorall();
+				break; // work is done, stop cycling
+			}
+		}
+	}
 
-      // If I deselect first selected element, decolorize all elements #dirty
-      if (currentSelection.length == 0) {
-        decolorall();
-      }
-      // When I have two values in comparison array, process it
-      if (currentSelection.length == 2) {
-        // Create two samples for comparison
-        var sample1 = currentSelection[0] + "	" + currentSelection[1];
-        var sample2 = currentSelection[1] + "	" + currentSelection[0];
-        // Some cards may have same text, if such cards are selected, decolor everything
-        if (sample1 == sample2) {
-          decolorall();
-        }
-        for (var i in cardListSelected) {
-          if (cardListSelected[i] == sample1 || cardListSelected[i] == sample2) { // if a match is found, that is correct matched pair,
-            var cards = document.getElementsByName("card");
-            for (var i in cards) {
-              if (cards[i].innerHTML == currentSelection[0]) {
-                cards[i].parentNode.removeChild(card[i]); // pop those cards out of stack
-                break; // because I don't want to delete multiple elements with same values
-              }
-            }
-            for (var i in cards) {
-              if (cards[i].innerHTML == currentSelection[1]) {
-                cards[i].parentNode.removeChild(card[i]); // the second one too!
-                break; // because I don't want to delete multiple elements with same values
-              }
-            }
-            currentSelection = [];
-            drop.play(); // Play the quick funny sound
-            decolorall();
-            break; // work is done, stop cycling
-          }
-        }
-      }
+	// If user selects more than 2 elements, reset arrays and colors
+	if (currentSelection.length > 2) {
+		currentSelection = [];
+		decolorall();
+	}
 
-      // If user selects more than 2 elements, reset arrays and colors
-      if (currentSelection.length > 2) {
-        currentSelection = [];
-        decolorall();
-      }
+// If last two cards are remaining, delete them #NotWorking!?
+numcards = document.getElementsByName("card").length;
+if (numcards == 2){
+cleanup();
+}
+}
 
-      // If last two cards are remaining, delete them #NotWorking!?
-      numcards = document.getElementsByName("card").length;
-      if (numcards == 2) {
-        cleanup();
-      }
-    }
+// Dirty decolorizer
+function decolorall() {
+	var cards = document.getElementsByName("card");
+	for (var i in cards) {
+		cards[i].style.backgroundColor = "#FBFFE5";
+	}
+}
 
-     // Dirty decolorizer
-    function decolorall() {
-      var cards = document.getElementsByName("card");
-      for (var i in cards) {
-        cards[i].style.backgroundColor = "#FBFFE5";
-      }
-    }
+// Redundant cleanup, TODO
+function cleanup() {
+	var cards = document.getElementsByName("card");
+	for (var i in cards) {
+		delete cards[i];
+	}
+}
 
-     // Reload
-    function cleanup() {
-      //clean.play();
-      window.location.href=window.location.href;
-    }
-
-     /// Main activity
-    window.onload = function() {
-      var fileInput = document.getElementById('fileInput');
-      var fileDisplayArea = document.getElementById('fileDisplayArea');
-      fileInput.addEventListener('change', function(e) {
-        var file = fileInput.files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var fileText = reader.result; // Read file contents
-          cardList = fileText.split("\n"); // Load file contents into array
-          shuffle(cardList);
-          cardListSelected = cardList.splice(0, 10); // I only want 10 random cards, because too many match the pairs!
-          var fronts = new Array
-          var backs = new Array
-          for (var i in cardListSelected) { // Create separate arrays for front and back
-            tempArray = cardListSelected[i].split("\t");
-            fronts.push(tempArray[0]);
-            backs.push(tempArray[1]);
-          }
-          shuffle(fronts);
-          shuffle(backs);
-          var lp = document.getElementsByName("LeftPanel")[0];
-          var rp = document.getElementsByName("RightPanel")[0];
-          for (var i in fronts) { // Spawn front sides of cards on left panel
-            var card = document.createElement('div');
-            card.setAttribute('id', 'card');
-            card.setAttribute('name', 'card');
-            card.setAttribute('onMouseDown', 'processclick(this)');
-            card.innerHTML = fronts[i];
-            lp.appendChild(card);
-          }
-          for (var i in backs) { // Spawn back sides of cards on right panel
-            var card = document.createElement('div');
-            card.setAttribute('id', 'card');
-            card.setAttribute('name', 'card');
-            card.setAttribute('onMouseDown', 'processclick(this)');
-            card.innerHTML = backs[i];
-            rp.appendChild(card);
-          }
-          document.getElementById("hidden").setAttribute('id', 'clean_button');
-          document.getElementById("fileInput").setAttribute('id', 'hidden');
-        }
-        reader.readAsText(file); // ??
-      });
-    }
-  </script>
+/// Main activity
+window.onload = function() {
+	var fileInput = document.getElementById('fileInput');
+	var fileDisplayArea = document.getElementById('fileDisplayArea');
+	fileInput.addEventListener('change', function(e) {
+		var file = fileInput.files[0];
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			var fileText = reader.result; // Read file contents
+			cardList = fileText.split("\n"); // Load file contents into array
+			shuffle(cardList);
+			cardListSelected = cardList.splice(0,10); // I only want 10 random cards, because too many match the pairs!
+			var fronts = new Array
+			var backs = new Array
+			for (var i in cardListSelected) { // Create separate arrays for front and back
+				tempArray = cardListSelected[i].split("\t");
+				fronts.push(tempArray[0]);
+				backs.push(tempArray[1]);
+			}
+			shuffle(fronts);
+			shuffle(backs);
+			var lp = document.getElementsByName("LeftPanel")[0];
+			var rp = document.getElementsByName("RightPanel")[0];
+			for (var i in fronts) { // Spawn front sides of cards on left panel
+				var card = document.createElement('div');
+				card.setAttribute('id', 'card');
+				card.setAttribute('name', 'card');
+				card.setAttribute('onMouseDown', 'processclick(this)');
+				card.innerHTML = fronts[i];
+				lp.appendChild(card);
+			}
+			for (var i in backs) { // Spawn back sides of cards on right panel
+				var card = document.createElement('div');
+				card.setAttribute('id', 'card');
+				card.setAttribute('name', 'card');
+				card.setAttribute('onMouseDown', 'processclick(this)');
+				card.innerHTML = backs[i];
+				rp.appendChild(card);
+			}
+			document.getElementById("hidden").setAttribute('id','clean_button');
+			document.getElementById("fileInput").setAttribute('id','hidden');
+		}
+		reader.readAsText(file); // ??
+	});
+}
+</script>
 </body>
-
-</html>
