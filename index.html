@@ -13,7 +13,7 @@
 	font-size:19px bold;
 	text-align: center;
 	font-family: Sans serif;
-	overflow:scroll;
+	overflow: auto;
 }
 
 #hidden {
@@ -36,12 +36,24 @@ td {
 padding: 5px 5px;
 }
 
+#fileInputDiv {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+}
+
 </style>
 </head>
 <body>
 <div id="page-wrapper">
 
-		<div>
+		<div id="fileInputDiv">
 			<input type="file" id="fileInput" style="button">
 		</div>
 
@@ -192,4 +204,3 @@ window.onload = function() {
 }
 </script>
 </body>
-
