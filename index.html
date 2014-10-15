@@ -118,7 +118,7 @@
             var cards = document.getElementsByName("card");
             for (var i in cards) {
               if (cards[i].innerHTML == currentSelection[0]) {
-                card[i].parentNode.removeChild(card[i]); // pop those cards out of stack
+                cards[i].parentNode.removeChild(card[i]); // pop those cards out of stack
                 break; // because I don't want to delete multiple elements with same values
               }
             }
