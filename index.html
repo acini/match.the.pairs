@@ -5,10 +5,10 @@
 #card {
 	background-color: #FBFFE5;
 	border: 2px solid;
-	border-radius: 10px;
-	width: 100%;
-	height: 100%;
-	padding: 5px 5px;
+	border-radius: 5px;
+	width: 90%;
+	height: 70px;
+	padding: 5px 10px;
 	margin: 2px 2px;
 	font-size:19px bold;
 	text-align: center;
@@ -155,7 +155,7 @@ window.onload = function() {
 			var fileText = reader.result; // Read file contents
 			cardList = fileText.split("\n"); // Load file contents into array
 			shuffle(cardList);
-			cardListSelected = cardList.splice(0,10); // I only want 10 random cards, because too many match the pairs!
+			cardListSelected = cardList.splice(0,6); // I only want 10 random cards, because too many match the pairs!
 			var fronts = new Array
 			var backs = new Array
 			for (var i in cardListSelected) { // Create separate arrays for front and back
@@ -191,3 +191,4 @@ window.onload = function() {
 }
 </script>
 </body>
+
